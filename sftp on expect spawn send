@@ -1,0 +1,18 @@
+#! /bin/expect
+set dddate [exec date +%Y%m%d]
+puts $ddate
+
+spawn sftp -o PasswordAuthentication=yes -o PubkeyAuthentication=no username@servername
+expect "Enter Password:"
+send "password\n"
+
+expect "sftp>"
+send "lcd /mnt/destinatoin\n"
+
+expect "sftp>"
+#send "get filename_20210506_261526.xlsx\n"
+send "get filename_$ddate*\n"
+set timeout 2000
+
+expect "sftp>"
+send "bye\n"
